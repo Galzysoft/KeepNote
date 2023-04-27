@@ -14,8 +14,8 @@ Container Nocategorybubble() {
         SizedBox(width: 10,),
         Icon(Icons.folder_outlined,color: Colors.white,size:19,),
         SizedBox(width: 4,),
-        Text('No category' ,style: GoogleFonts.roboto(fontSize: 15,color: Colors.white60,fontWeight: FontWeight.w400),),
-        SizedBox(width: 8,),
+        Flexible(child: Text('No category' ,style: GoogleFonts.roboto(fontSize: 15,color: Colors.white60,fontWeight: FontWeight.w400),)),
+        SizedBox(width: 1,),
         Icon(Icons.arrow_drop_down_sharp,color: Colors.grey,)
       ],
     ),
