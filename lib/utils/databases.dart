@@ -16,24 +16,30 @@ class DatabaseNotes {
     // open the database
     openDatabase(dbPath, onCreate: (db, version) {
       print('db created');
-    },
-        onOpen: (db) {
+    }, onOpen: (db) {
       print('db opened');
       // init the database
       DB = db;
       createTables();
-    }, version: 1);
+    }, version: 2);
   }
 
   Future<void> createTables() async {
     try {
-      DB!.execute(''' CREATE TABLE ${DatabaseConst.noteTable} (${DatabaseConst.noteId} INTEGER PRIMARY KEY AUTOINCREMENT, ${DatabaseConst.noteTitle} TEXT, ${DatabaseConst.noteDescription} TEXT, ${DatabaseConst.noteDateTime} TEXT)''').whenComplete(
+      DB!.execute(''' CREATE TABLE ${DatabaseConst.noteTable} (${DatabaseConst.noteId} INTEGER PRIMARY KEY AUTOINCREMENT, ${DatabaseConst.cateId} INTEGER, ${DatabaseConst.noteTitle} TEXT, ${DatabaseConst.noteDescription} TEXT, ${DatabaseConst.noteDateTime} TEXT)''').whenComplete(
           () => print('${DatabaseConst.noteTable} table created  '));
     } on Exception catch (e) {
       print(' ${DatabaseConst.noteTable} table error  $e');
       // TODO
     }
-   ///^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+    ///^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^cartegory^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    try {
+      DB!.execute(''' CREATE TABLE ${DatabaseConst.categoryTable} (${DatabaseConst.categoryId} INTEGER PRIMARY KEY AUTOINCREMENT, ${DatabaseConst.categoryTitle} TEXT, ${DatabaseConst.categoryDateTime} TEXT)''').whenComplete(
+          () => print('${DatabaseConst.categoryTable} table created  '));
+    } on Exception catch (e) {
+      print(' ${DatabaseConst.categoryTable} table error  $e');
+      // TODO
+    }
   }
 }
