@@ -8,35 +8,40 @@ import 'state.dart';
 
 class AddNotesLogic extends GetxController {
   final AddNotesState state = AddNotesState();
-TextEditingController titleController=TextEditingController();
-TextEditingController noteController=TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+  var isCreateNotes = true.obs;
 
- Future <void> createNotes() async{
-
-    if (titleController.text.isNotEmpty||noteController.text.isNotEmpty) {
-      String dateTime=  DateFormat("mm:ss a").format(DateTime.now());
+  Future<void> createNotes() async {
+    if (titleController.text.isNotEmpty || noteController.text.isNotEmpty) {
+      // String dateTime=  DateFormat("mm:ss a").format(DateTime.now());
+      String dateTime = DateTime.now().toString();
 
       DB!.execute(
           "INSERT INTO ${DatabaseConst.noteTable} (${DatabaseConst.noteTitle},${DatabaseConst.cateId},${DatabaseConst.noteDescription}, ${DatabaseConst.noteDateTime}) VALUES(?,?,?,?)",
           [
-            titleController.text.isEmpty?"": titleController.text,
+            titleController.text.isEmpty ? "" : titleController.text,
             0,
-            noteController.text.isEmpty?"":noteController.text,
+            noteController.text.isEmpty ? "" : noteController.text,
             dateTime
-          ]).whenComplete(
-          () {
-            print('done inserting into ${DatabaseConst.noteTable}');
-            titleController.clear();
-           noteController.clear();
+          ]).whenComplete(() {
+        print('done inserting into ${DatabaseConst.noteTable}');
+        titleController.clear();
+        noteController.clear();
 
-            selectAllNotes();
-          });
+        selectAllNotes();
+      });
     }
   }
 
+  Future<void> updateNotes({required int id}) async {
+    DB!.execute(
+        "UPDATE ${DatabaseConst.noteTable} SET ${DatabaseConst.noteTitle} = ?,${DatabaseConst.cateId} = ?,${DatabaseConst.noteDescription} = ? WHERE ${DatabaseConst.noteId} = ?",
+        [titleController.text, 0, noteController.text,id]).whenComplete(() =>     print('updated successfully '));
+  }
 
-  Future<void> selectAllNotes()async{
-   var result= await DB!.rawQuery("SELECT * FROM ${DatabaseConst.noteTable}");
-   print( 'result $result');
+  Future<void> selectAllNotes() async {
+    var result = await DB!.rawQuery("SELECT * FROM ${DatabaseConst.noteTable}");
+    print('result $result');
   }
 }

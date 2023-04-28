@@ -29,7 +29,7 @@ class _NavigationPageState extends State<NavigationPage> {
             selected_Index = value;
           });
         },
-        selectedItemColor: Color(0xFF0D65AD),
+        selectedItemColor: Color(0xFF51FF7A),
         items: const [
           BottomNavigationBarItem(
               icon: Icon(
@@ -40,7 +40,7 @@ class _NavigationPageState extends State<NavigationPage> {
               label: "Notes",
               activeIcon: Icon(
                 Icons.vertical_split_sharp,
-                color: Color(0xFF2973FD),
+                color: Color(0xFF51FF7A),
               )),
           BottomNavigationBarItem(
               icon: Icon(
@@ -51,15 +51,15 @@ class _NavigationPageState extends State<NavigationPage> {
               label: "To do",
               activeIcon: Icon(
                 Icons.check_circle,
-                color: Color(0xFF2973FD),
+                color: Color(0xFF51FF7A),
               )),
         ],
         backgroundColor: const Color(0xFF2E2E2E),
       ),
       floatingActionButton: FloatingActionButton(hoverElevation: 0,
-        backgroundColor: const Color(0xFF2973FD),
+        backgroundColor: const Color(0xFF114D1F),
         onPressed: () {
-          Get.to(AddNotesPage(),transition: Transition.rightToLeft);
+          Get.to(AddNotesPage(addNoteStatus: AddNoteStatus.ADD),transition: Transition.rightToLeft);
         },
         child: const Icon(
           Icons.add,

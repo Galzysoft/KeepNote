@@ -10,15 +10,14 @@ import 'state.dart';
 class HomepageLogic extends GetxController {
   final HomepageState state = HomepageState();
   StreamController<List<NoteModel>> allNoteControllers =
-       StreamController<List<NoteModel>>.broadcast();
-   Timer? timer;
-startTimer(){
-timer=Timer.periodic(Duration(seconds: 1), (timer) {
-   selectAllNotes();
+      StreamController<List<NoteModel>>.broadcast();
+  Timer? timer;
 
-  });
-}
-
+  startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      selectAllNotes();
+    });
+  }
 
   Future<List<NoteModel>> selectAllNotes() async {
     List<NoteModel> NoteModelList = [];

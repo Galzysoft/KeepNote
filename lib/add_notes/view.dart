@@ -2,34 +2,81 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:keep_notes/homepage/model.dart';
 import '../customWidgets/nocategory.dart';
 import '../navigation.dart';
 import 'logic.dart';
 
-class AddNotesPage extends StatelessWidget {
-  AddNotesPage({Key? key}) : super(key: key);
+enum AddNoteStatus { ADD, UPDATE }
 
+class AddNotesPage extends StatefulWidget {
+  AddNotesPage({
+    Key? key,
+    this.addNoteStatus = AddNoteStatus.ADD,
+    this.noteModel,
+  }) : super(key: key);
+  final AddNoteStatus addNoteStatus;
+  final NoteModel? noteModel;
+
+  @override
+  State<AddNotesPage> createState() => _AddNotesPageState();
+}
+
+class _AddNotesPageState extends State<AddNotesPage> {
   final logic = Get.put(AddNotesLogic());
+
   final state = Get.find<AddNotesLogic>().state;
+
+  String get getDate {
+    if (widget.addNoteStatus == AddNoteStatus.UPDATE) {
+      return "${DateFormat("MMM dd EEE yyyy / h:mm:ss a").format(DateTime.parse(widget.noteModel!.dateTime!))}";
+    } else {
+      return "${DateFormat("MMM dd EEE yyyy / h:mm:ss a").format(DateTime.now())}";
+
+    }
+  }
+
+  @override
+  void initState() {
+    if (widget.addNoteStatus == AddNoteStatus.UPDATE) {
+      logic.titleController.text = widget.noteModel!.title!;
+      logic.noteController.text = widget.noteModel!.description!;
+    } // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    return WillPopScope(onWillPop: () async{
-      logic.createNotes();
-      return true;
-    },
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget.addNoteStatus == AddNoteStatus.ADD) {
+          logic.createNotes();
+        }else{
+          logic.updateNotes(id:int.parse( widget.noteModel!.id!));
+        }
+        logic.titleController.clear();
+        logic.noteController.clear();
+        return true;
+      },
       child: Scaffold(
         backgroundColor: Color(0xFF010909),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: IconButton(
-              onPressed: () {logic.createNotes().whenComplete(() {
+              onPressed: () {
+                if (widget.addNoteStatus == AddNoteStatus.ADD) {
+                  logic.createNotes().whenComplete(() {
+                    Get.back();
+                  });
+                  logic.titleController.clear();
+                  logic.noteController.clear();
+                } else {
+                  logic.updateNotes(id:int.parse( widget.noteModel!.id!)).whenComplete(() {    Get.back();});
 
-                Get.back();
-
-              });
-                },
+                  logic.titleController.clear();
+                  logic.noteController.clear();
+                }
+              },
               icon: const Icon(
                 Icons.arrow_back_sharp,
                 color: Colors.white,
@@ -81,7 +128,7 @@ class AddNotesPage extends StatelessWidget {
                     width: 25,
                   ),
                   Text(
-                    DateFormat("mm:ss a").format(DateTime.now()),
+                    getDate,
                     style: TextStyle(
                         fontSize: 16, color: Colors.white.withOpacity(0.9)),
                   ),
