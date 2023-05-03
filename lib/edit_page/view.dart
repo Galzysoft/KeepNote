@@ -24,7 +24,7 @@ class EditPagePage extends StatelessWidget {
           body: ListView.builder(
             itemCount: logic.totalList.length,
             itemBuilder: (context, index) =>
-                NoteCard(noteModel: logic.totalList[index]),
+                NoteCard(noteModel: logic.totalList[index],onEdit: true),
           ),
         ),
       ],

@@ -9,8 +9,9 @@ import 'package:keep_notes/edit_page/view.dart';
 import 'package:keep_notes/homepage/model.dart';
 
 class NoteCard extends StatefulWidget {
-  NoteCard({Key? key, this.noteModel, this.noteModelList}) : super(key: key);
+  NoteCard({Key? key, this.noteModel, this.noteModelList, this.onEdit=false}) : super(key: key);
   final NoteModel? noteModel;
+  final bool? onEdit;
   final List<NoteModel>? noteModelList;
 
   @override
@@ -94,14 +95,14 @@ if ( widget.noteModel!.edit == true){
                   trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Checkbox(
+                     widget.onEdit==true?   Checkbox(
                           value:isSelected,
                           onChanged: (value) {
                             setState(() {
                               isSelected = !isSelected;
                             });
                           },
-                        )
+                        ):SizedBox()
                       ]),
                 )),
           ),
