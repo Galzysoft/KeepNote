@@ -9,6 +9,7 @@ import 'state.dart';
 
 class HomepageLogic extends GetxController {
   final HomepageState state = HomepageState();
+  List<NoteModel> NoteModelList = [];
   StreamController<List<NoteModel>> allNoteControllers =
       StreamController<List<NoteModel>>.broadcast();
   Timer? timer;
@@ -20,7 +21,7 @@ class HomepageLogic extends GetxController {
   }
 
   Future<List<NoteModel>> selectAllNotes() async {
-    List<NoteModel> NoteModelList = [];
+
     NoteModelList.clear();
     List result =
         await DB!.rawQuery("SELECT * FROM ${DatabaseConst.noteTable}");

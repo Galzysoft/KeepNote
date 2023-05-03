@@ -3,8 +3,9 @@ class  NoteModel {
   String? title;
   String? description;
   String? dateTime;
+  bool? edit;
 
-  NoteModel({this.id,this.title,this.description,this.dateTime});
+  NoteModel({this.id,this.title,this.description,this.dateTime,this.edit=false});
 
   NoteModel.fromjson(Map<String,dynamic> json){
 
@@ -12,5 +13,6 @@ class  NoteModel {
    this.description =json["Description"] ;
    this.title =json["Title"] ;
    this.dateTime =json["Date"] ;
+   this.edit=false;
   }
 }
