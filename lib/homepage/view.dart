@@ -126,6 +126,10 @@ class _HomepagePageState extends State<HomepagePage> {
                         itemBuilder: (context, index) => GestureDetector(
                             onLongPress: () {
                               logicdel.totalList =snapshot.data!;
+                              logicdel.editList.add(snapshot.data![index]);
+                              /// w3e print this out to know the number of elements in the list
+                              logicdel.editList.forEach((element) { print  ("elemnttos "+element.title!);});
+                           //
                               snapshot.data![index].edit=true;
                               Get.to(() => EditPagePage());
                             },child: NoteCard(

@@ -139,7 +139,7 @@ class _AddNotesPageState extends State<AddNotesPage> {
                 child: TextField(
                   maxLines: 200,
                   controller: logic.noteController,
-                  autofocus: true,
+                  autofocus: false,
                   smartDashesType: SmartDashesType.disabled,
                   autocorrect: true,
                   style: GoogleFonts.actor(fontSize: 14, color: Colors.white),

@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:flutter/material.dart';
@@ -56,16 +57,26 @@ class _NavigationPageState extends State<NavigationPage> {
         ],
         backgroundColor: const Color(0xFF2E2E2E),
       ),
-      floatingActionButton: FloatingActionButton(hoverElevation: 0,
-        backgroundColor: const Color(0xFF114D1F),
-        onPressed: () {
-          Get.to(AddNotesPage(addNoteStatus: AddNoteStatus.ADD),transition: Transition.rightToLeft);
-        },
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: GestureDetector(
+          onTap: () {
+            Get.to(AddNotesPage(addNoteStatus: AddNoteStatus.ADD),
+                transition: Transition.rightToLeft);
+          },
+          child: OpenContainer(
+            closedBuilder: (context, action) => CircleAvatar(
+              radius: 30,
+              backgroundColor: Color(0xFF114D1F),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+            openBuilder: (context, action) =>
+                AddNotesPage(addNoteStatus: AddNoteStatus.ADD),closedColor: Color(0xFF114D1F) ,
+            closedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(3000))),
+            transitionDuration: Duration(seconds: 1),
+          )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
