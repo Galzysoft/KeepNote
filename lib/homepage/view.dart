@@ -27,7 +27,7 @@ class _HomepagePageState extends State<HomepagePage> {
   final state = Get.find<HomepageLogic>().state;
   int selectedIndex = 0;
   bool isSelected = false;
-  final logicdel = Get.put(EditPageLogic());
+  final logicEdit = Get.put(EditPageLogic());
   @override
   initState() {
     logic.startTimer();
@@ -125,12 +125,11 @@ class _HomepagePageState extends State<HomepagePage> {
                         // physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) => GestureDetector(
                             onLongPress: () {
-                              logicdel.totalList =snapshot.data!;
-                              logicdel.editList.add(snapshot.data![index]);
-                              /// w3e print this out to know the number of elements in the list
-                              logicdel.editList.forEach((element) { print  ("elemnttos "+element.title!);});
-                           //
+                              logicEdit.totalList .value=snapshot.data!;
+                              logicEdit.editList.add(snapshot.data![index]);
                               snapshot.data![index].edit=true;
+                              logicEdit.editList.forEach((element) {print("index = ${element.id}");});
+
                               Get.to(() => EditPagePage());
                             },child: NoteCard(
                               noteModel: snapshot.data![index],

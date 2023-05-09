@@ -8,11 +8,20 @@ import 'package:keep_notes/edit_page/logic.dart';
 import 'package:keep_notes/edit_page/view.dart';
 import 'package:keep_notes/homepage/model.dart';
 
+enum NoteCardState { ON_DEFAULT, ON_EDIT }
+
 class NoteCard extends StatefulWidget {
-  NoteCard({Key? key, this.noteModel, this.noteModelList, this.onEdit=false}) : super(key: key);
+  NoteCard(
+      {Key? key,
+      this.noteModel,
+      this.noteModelList,
+      this.onEdit = false,
+      this.noteCardState = NoteCardState.ON_DEFAULT})
+      : super(key: key);
   final NoteModel? noteModel;
   final bool? onEdit;
   final List<NoteModel>? noteModelList;
+  final NoteCardState? noteCardState;
 
   @override
   State<NoteCard> createState() => _NoteCardState();
@@ -20,16 +29,19 @@ class NoteCard extends StatefulWidget {
 
 class _NoteCardState extends State<NoteCard> {
   bool isSelected = false;
-  final logicdel = Get.put(EditPageLogic());
-@override
+  final logicEdit = Get.put(EditPageLogic());
+  @override
   void initState() {
-if ( widget.noteModel!.edit == true){
-  isSelected=true;
-}else{ isSelected=false;}
+    if (widget.noteModel!.edit == true) {
+      isSelected = true;
+    } else {
+      isSelected = false;
+    }
 
-  // TODO: implement initState
+    // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,11 +65,26 @@ if ( widget.noteModel!.edit == true){
                 child: ListTile(
                   splashColor: Colors.black,
                   onTap: () {
-                    Get.to(
-                        AddNotesPage(
-                            addNoteStatus: AddNoteStatus.UPDATE,
-                            noteModel: widget.noteModel),
-                        transition: Transition.rightToLeft);
+                    if (widget.noteCardState == NoteCardState.ON_EDIT) {
+                      setState(() {
+                        isSelected = !isSelected;
+                        if(isSelected) {logicEdit.editList.add(widget.noteModel!);
+
+
+                        }else {logicEdit.editList.removeWhere((element) {
+
+                          return  element.id==widget.noteModel!.id;
+                        });}
+
+                        logicEdit.editList.forEach((element) {print("index = ${element.id}");});
+                      });
+                    } else {
+                      Get.to(
+                          AddNotesPage(
+                              addNoteStatus: AddNoteStatus.UPDATE,
+                              noteModel: widget.noteModel),
+                          transition: Transition.rightToLeft);
+                    }
                   },
                   title: Text(
                       style: TextStyle(color: Colors.white),
@@ -95,14 +122,16 @@ if ( widget.noteModel!.edit == true){
                   trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                     widget.onEdit==true?   Checkbox(
-                          value:isSelected,
-                          onChanged: (value) {
-                            setState(() {
-                              isSelected = !isSelected;
-                            });
-                          },
-                        ):SizedBox()
+                        widget.onEdit == true
+                            ? Checkbox(
+                                value: isSelected,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isSelected = !isSelected;
+                                  });
+                                },
+                              )
+                            : SizedBox()
                       ]),
                 )),
           ),
