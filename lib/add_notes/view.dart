@@ -32,7 +32,6 @@ class _AddNotesPageState extends State<AddNotesPage> {
       return "${DateFormat("MMM dd EEE yyyy / h:mm:ss a").format(DateTime.parse(widget.noteModel!.dateTime!))}";
     } else {
       return "${DateFormat("MMM dd EEE yyyy / h:mm:ss a").format(DateTime.now())}";
-
     }
   }
 
@@ -51,8 +50,8 @@ class _AddNotesPageState extends State<AddNotesPage> {
       onWillPop: () async {
         if (widget.addNoteStatus == AddNoteStatus.ADD) {
           logic.createNotes();
-        }else{
-          logic.updateNotes(id:int.parse( widget.noteModel!.id!));
+        } else {
+          logic.updateNotes(id: int.parse(widget.noteModel!.id!));
         }
         logic.titleController.clear();
         logic.noteController.clear();
@@ -71,7 +70,11 @@ class _AddNotesPageState extends State<AddNotesPage> {
                   logic.titleController.clear();
                   logic.noteController.clear();
                 } else {
-                  logic.updateNotes(id:int.parse( widget.noteModel!.id!)).whenComplete(() {    Get.back();});
+                  logic
+                      .updateNotes(id: int.parse(widget.noteModel!.id!))
+                      .whenComplete(() {
+                    Get.back();
+                  });
 
                   logic.titleController.clear();
                   logic.noteController.clear();
@@ -100,7 +103,45 @@ class _AddNotesPageState extends State<AddNotesPage> {
                   const SizedBox(
                     width: 20,
                   ),
-                  Flexible(child: Nocategorybubble()),
+                  Flexible(child: Nocategorybubble(
+                    onTap: () {
+                      showModalBottomSheet(
+                        constraints:
+                            BoxConstraints(minHeight: 300, minWidth: Get.width),
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            decoration: BoxDecoration(
+                                color: Color(0xFF1A1A1A),
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    topLeft: Radius.circular(20))),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 50,
+                                      height: 2,
+                                      color: Colors.green,
+                                    )
+                                  ],
+                                ),
+                                Expanded(
+                                  child: ListView(children: []),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  )),
                 ],
               ),
               Padding(

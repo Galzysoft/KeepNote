@@ -10,6 +10,8 @@ import 'package:keep_notes/customWidgets/noteCard.dart';
 import 'package:keep_notes/edit_page/logic.dart';
 import 'package:keep_notes/edit_page/view.dart';
 import 'package:keep_notes/homepage/model.dart';
+import 'package:keep_notes/search_screen/logic.dart';
+import 'package:keep_notes/search_screen/view.dart';
 
 import '../to_do/view.dart';
 import 'logic.dart';
@@ -28,6 +30,7 @@ class _HomepagePageState extends State<HomepagePage> {
   int selectedIndex = 0;
   bool isSelected = false;
   final logicEdit = Get.put(EditPageLogic());
+  final logicSearch = Get.put(SearchScreenLogic());
   @override
   initState() {
     logic.startTimer();
@@ -89,26 +92,34 @@ class _HomepagePageState extends State<HomepagePage> {
                     SizedBox(height: 23),
                     Padding(
                       padding: const EdgeInsets.only(left: 18, right: 18),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xff51FF7A),
-                              ),
-                              borderRadius: BorderRadius.circular(29),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search_rounded,
-                              color: Colors.grey,
-                              size: 28,
-                            ),
-                            hintText: "Search for notes",
-                            fillColor: Color(0xFF2E2E2E),
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(29),
-                              borderSide: BorderSide.none,
-                            )),
+                      child: InkWell(onTap: () {
+                        logicSearch.totalList .value=logic.NoteModelList;
+
+                        Get.to(SearchScreenPage());
+                      },
+                        child: IgnorePointer(ignoring: true,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0xff51FF7A),
+                                  ),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.search_rounded,
+                                  color: Colors.grey,
+                                  size: 28,
+                                ),
+                                hintText: "Search for notes",
+                                fillColor: Color(0xFF2E2E2E),
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(29),
+                                  borderSide: BorderSide.none,
+                                )),
+                          ),
+                        ),
                       ),
                     ),
                   ])),
@@ -129,7 +140,7 @@ class _HomepagePageState extends State<HomepagePage> {
                               logicEdit.editList.add(snapshot.data![index]);
                               snapshot.data![index].edit=true;
                               logicEdit.editList.forEach((element) {print("index = ${element.id}");});
-
+logicEdit.noSelected.value=1;
                               Get.to(() => EditPagePage());
                             },child: NoteCard(
                               noteModel: snapshot.data![index],

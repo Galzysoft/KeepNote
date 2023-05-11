@@ -69,12 +69,16 @@ class _NoteCardState extends State<NoteCard> {
                       setState(() {
                         isSelected = !isSelected;
                         if(isSelected) {logicEdit.editList.add(widget.noteModel!);
-
-
-                        }else {logicEdit.editList.removeWhere((element) {
-
+                        logicEdit.noSelected.value+=1;
+                         ;
+                        }else {
+                          logicEdit.noSelected.value-=1;
+                          logicEdit.editList.removeWhere((element) {
                           return  element.id==widget.noteModel!.id;
-                        });}
+                        });
+                         ;
+
+                        }
 
                         logicEdit.editList.forEach((element) {print("index = ${element.id}");});
                       });
@@ -128,6 +132,19 @@ class _NoteCardState extends State<NoteCard> {
                                 onChanged: (value) {
                                   setState(() {
                                     isSelected = !isSelected;
+                                    if(isSelected) {logicEdit.editList.add(widget.noteModel!);
+                                    logicEdit.noSelected.value+=1;
+                                     ;
+                                    }else {
+                                      logicEdit.noSelected.value-=1;
+                                      logicEdit.editList.removeWhere((element) {
+                                        return  element.id==widget.noteModel!.id;
+                                      });
+                                       ;
+
+                                    }
+
+                                    logicEdit.editList.forEach((element) {print("index = ${element.id}");});
                                   });
                                 },
                               )

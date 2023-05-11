@@ -31,6 +31,9 @@ class _EditPagePageState extends State<EditPagePage> {
           fit: BoxFit.cover,
         ),
         Scaffold(
+          appBar: AppBar(title: Obx(() {
+            return Text(logic.noSelected.value==0?"":"${logic.noSelected} selected");
+          })),
           backgroundColor: Colors.transparent,
           bottomNavigationBar: ClipRRect(
               borderRadius: BorderRadius.only(
@@ -82,11 +85,11 @@ class _EditPagePageState extends State<EditPagePage> {
                                           child: Text("Yes"),
                                         ),
                                       ]),
-
                             ).then((value) {
                               if (value == true) {
-                                logic.deleteNoteList().then((value) =>
-                                    setState(() {}));
+                                logic
+                                    .deleteNoteList()
+                                    .then((value) => setState(() {}));
                               } else {}
                               return null;
                             });
@@ -103,13 +106,20 @@ class _EditPagePageState extends State<EditPagePage> {
                     )),
               )),
           body: Obx(() {
-            return ListView.builder(
+            return logic.isLoading.value
+                ? Center(
+              child: CupertinoActivityIndicator(),
+            )
+                : ListView.builder(
               itemCount: logic.totalList.value.length,
               itemBuilder: (context, index) =>
-                  NoteCard(
-                      noteCardState: NoteCardState.ON_EDIT,
-                      noteModel: logic.totalList.value[index],
-                      onEdit: true),
+                  GestureDetector(
+
+                    child: NoteCard(
+                        noteCardState: NoteCardState.ON_EDIT,
+                        noteModel: logic.totalList.value[index],
+                        onEdit: true),
+                  ),
             );
           }),
         ),
